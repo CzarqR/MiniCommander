@@ -39,7 +39,6 @@ namespace Commander.View
             DependencyProperty.Register("Path", typeof(string), typeof(PanelTCControl), new PropertyMetadata(null));
 
 
-
         public List<string> Drives
         {
             get
@@ -54,8 +53,6 @@ namespace Commander.View
 
         public static readonly DependencyProperty DrivesProperty =
             DependencyProperty.Register("Drives", typeof(List<string>), typeof(PanelTCControl), new PropertyMetadata(null));
-
-
 
 
         public List<string> PathContent
@@ -74,9 +71,6 @@ namespace Commander.View
             DependencyProperty.Register("PathContent", typeof(List<string>), typeof(PanelTCControl), new PropertyMetadata(null));
 
 
-
-
-
         public int SelectedDriveIndex
         {
             get
@@ -92,6 +86,21 @@ namespace Commander.View
         public static readonly DependencyProperty SelectedDriveIndexProperty =
             DependencyProperty.Register("SelectedDriveIndex", typeof(int), typeof(PanelTCControl), new PropertyMetadata(null));
 
+
+        public string ErrorText
+        {
+            get
+            {
+                return (string)GetValue(ErrorTextProperty);
+            }
+            set
+            {
+                SetValue(ErrorTextProperty, value);
+            }
+        }
+
+        public static readonly DependencyProperty ErrorTextProperty =
+            DependencyProperty.Register("ErrorText", typeof(string), typeof(PanelTCControl), new PropertyMetadata(null));
 
 
 
@@ -109,30 +118,6 @@ namespace Commander.View
 
         public static readonly DependencyProperty SelectPathProperty =
             DependencyProperty.Register("SelectPath", typeof(ICommand), typeof(PanelTCControl), new PropertyMetadata(null));
-
-
-
-
-        //public int SelectedContentIndex
-        //{
-        //    get
-        //    {
-        //        return (int)GetValue(SelectedContentIndexProperty);
-        //    }
-        //    set
-        //    {
-        //        SetValue(SelectedContentIndexProperty, value);
-        //    }
-        //}
-
-        //public static readonly DependencyProperty SelectedContentIndexProperty =
-        //    DependencyProperty.Register("SelectedContentIndex", typeof(int), typeof(PanelTCControl), new PropertyMetadata(null));
-
-
-
-
-
-
 
         #endregion
 

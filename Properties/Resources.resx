@@ -118,10 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="copy" xml:space="preserve">
-    <value>Copy &gt;&gt;</value>
+    <value>Copy file&gt;&gt;</value>
   </data>
   <data name="drive" xml:space="preserve">
     <value>Drive</value>
+  </data>
+  <data name="folder_up" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="lack_of_acces" xml:space="preserve">
+    <value>Lack of access!</value>
   </data>
   <data name="path" xml:space="preserve">
     <value>Path</value>

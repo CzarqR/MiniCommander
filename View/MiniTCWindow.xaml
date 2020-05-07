@@ -9,7 +9,8 @@
     xmlns:vm="clr-namespace:Commander.ViewModel.WindowVM"
     mc:Ignorable="d"
     Title="MiniTC"
-    Height="450"
+    Background="#151515"
+    Height="800"
     Width="800">
 
     <Window.Resources>
@@ -44,6 +45,7 @@
 
                 <DataTemplate>
                     <local:PanelTCControl
+                        ErrorText="{Binding ErrorText}"
                         SelectPath="{Binding PathSelectCommand}"
                         PathContent="{Binding Content}"
                         SelectedDriveIndex="{Binding SelectedDriveIndex, Mode=TwoWay}"
@@ -55,6 +57,7 @@
         </ItemsControl>
 
         <Button
+            Command="{Binding CopyCommand}"
             Margin="5"
             Width="100"
             Grid.Row="1">

@@ -5,10 +5,10 @@ namespace Commander.ViewModel.Commands
 {
     class CommandHandlerParameter : ICommand
     {
-        private readonly Action<bool> _action;
+        private readonly Action<int> _action;
         private readonly Func<bool> _canExecute;
 
-        public CommandHandlerParameter(Action<bool> action, Func<bool> canExecute)
+        public CommandHandlerParameter(Action<int> action, Func<bool> canExecute)
         {
             _action = action;
             _canExecute = canExecute;
@@ -34,7 +34,7 @@ namespace Commander.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-            _action((bool)parameter);
+            _action((int)parameter);
         }
     }
 }

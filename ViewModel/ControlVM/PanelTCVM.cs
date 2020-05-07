@@ -10,8 +10,16 @@ using System.Windows.Input;
 
 namespace Commander.ViewModel.ControlVM
 {
+    using R = Properties.Resources;
+
     class PanelTCVM : BaseVM
     {
+        #region properties
+
+        private List<string> contentOriginal;
+        private int foldersCount;
+        private int deepIndex;
+
         private string path;
 
         public string Path
@@ -28,6 +36,11 @@ namespace Commander.ViewModel.ControlVM
             }
         }
 
+        public string SelectedFile
+        {
+            get; private set;
+        }
+
         private int selectedDriveIndex;
 
         public int SelectedDriveIndex
@@ -39,11 +52,28 @@ namespace Commander.ViewModel.ControlVM
             set
             {
                 selectedDriveIndex = value;
+                deepIndex = 0;
                 Path = Drivers[SelectedDriveIndex];
                 Console.WriteLine(Path);
                 OnPropertyChanged(nameof(SelectedDriveIndex));
             }
         }
+
+        private string errorText;
+
+        public string ErrorText
+        {
+            get
+            {
+                return errorText;
+            }
+            set
+            {
+                errorText = value;
+                OnPropertyChanged(nameof(ErrorText));
+            }
+        }
+
 
         private List<string> drivers;
 
@@ -74,37 +104,92 @@ namespace Commander.ViewModel.ControlVM
             }
         }
 
+        #endregion
+
         private ICommand pathSelectCommand;
 
         public ICommand PathSelectCommand
         {
             get
             {
-                return pathSelectCommand ?? (pathSelectCommand = new CommandHandler(Click, () => { return true; }));
+                return pathSelectCommand ?? (pathSelectCommand = new CommandHandlerParameter(Click, () => { return true; }));
             }
 
         }
 
-        public void Click()
+        public void Click(int index)
         {
-            Console.WriteLine("SELECTED");
+            ErrorText = string.Empty;
+            Console.WriteLine($"deep index: {deepIndex}");
+            Console.WriteLine($"SELECTED {index}");
+            if (deepIndex == 0) //drive folder
+            {
+                Console.WriteLine("drive folder");
+                if (index < foldersCount)
+                {
+                    Console.WriteLine("folder");
+                    deepIndex++;
+                    Path = contentOriginal[index];
+                    SelectedFile = string.Empty;
+                }
+                else
+                {
+                    SelectedFile = contentOriginal[index];
+                    Console.WriteLine($"Selected file: {SelectedFile}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("deep folder");
+                if (index == 0)
+                {
+                    Console.WriteLine("folder up");
+                    deepIndex--;
+                    Path = System.IO.Path.GetDirectoryName(Path);
+                    SelectedFile = string.Empty;
+                }
+                else if (index <= foldersCount)
+                {
+                    Console.WriteLine("folder");
+                    deepIndex++;
+                    Path = contentOriginal[index - 1];
+                    SelectedFile = string.Empty;
+                }
+                else
+                {
+                    SelectedFile = contentOriginal[index - 1];
+                    Console.WriteLine($"Selected file: {SelectedFile}");
+                }
+            }
         }
 
 
-        private List<string> contentOriginal;
-        private int foldersCount;
+
 
         public PanelTCVM()
         {
             Drivers = Directory.GetLogicalDrives().OfType<string>().ToList();
             SelectedDriveIndex = 1; //todo, change to 0 after testing
+            deepIndex = 0;
             Path = Drivers[SelectedDriveIndex];
         }
 
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         private void UpdateContent()
         {
             Console.WriteLine("Update");
-            List<string> folders = Directory.GetDirectories(Path).OfType<string>().ToList();
+            List<string> folders;
+            try
+            {
+                folders = Directory.GetDirectories(Path).OfType<string>().ToList();
+            }
+            catch (UnauthorizedAccessException)
+            {
+                ErrorText = R.lack_of_acces;
+                return;
+            }
+
             foldersCount = folders.Count;
             List<string> files = Directory.GetFiles(Path).OfType<string>().ToList();
             contentOriginal = folders.Concat(files).ToList();
@@ -120,12 +205,23 @@ namespace Commander.ViewModel.ControlVM
                 files[i] = files[i].Substring(3);
             }
 
-            Content = folders.Concat(files).ToList();
 
-            //if (leftInsideIterator != 0)
-            //{
-            //    LeftContent.Insert(0, "...");
-            //}
+            if (deepIndex > 0)
+            {
+                /// Content aktualizuje się tylko gdy jest przypisanie
+                /// dlatego tworze liste z jednym elementem bo zwykłe insert nie działa
+                /// pewnie można to jakoś zrobić inaczej/lepiej z ObservableCollection
+                List<string> buff = new List<string>()
+                {
+                    R.folder_up
+                };
+                Content = buff.Concat(folders.Concat(files).ToList()).ToList();
+            }
+            else
+            {
+                Content = folders.Concat(files).ToList();
+            }
+
 
         }
 

@@ -61,7 +61,7 @@ namespace Commander.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Copy &gt;&gt;.
+        ///   Looks up a localized string similar to Copy file&gt;&gt;.
         /// </summary>
         public static string copy {
             get {
@@ -75,6 +75,24 @@ namespace Commander.Properties {
         public static string drive {
             get {
                 return ResourceManager.GetString("drive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ....
+        /// </summary>
+        public static string folder_up {
+            get {
+                return ResourceManager.GetString("folder_up", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lack of access!.
+        /// </summary>
+        public static string lack_of_acces {
+            get {
+                return ResourceManager.GetString("lack_of_acces", resourceCulture);
             }
         }
         

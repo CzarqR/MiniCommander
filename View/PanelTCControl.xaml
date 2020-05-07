@@ -19,6 +19,7 @@
             Margin="0,5">
 
             <TextBlock
+                Foreground="#EEEEEE"
                 Text="{x:Static r:Resources.path}"
                 Margin="10,0" />
 
@@ -61,18 +62,34 @@
                 DockPanel.Dock="Right"
                 Margin="10,0"
                 HorizontalAlignment="Stretch">
-
             </ComboBox>
 
             <TextBlock
+                Foreground="#EEEEEE"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
                 Text="{x:Static r:Resources.drive}"
                 Margin="10,0" />
 
+            <TextBlock
+                Foreground="Red"
+                HorizontalAlignment="Right"
+                DockPanel.Dock="Right"
+                Text="{
+                        Binding Path=ErrorText,
+                        RelativeSource={
+                                        RelativeSource Mode=FindAncestor, 
+                                        AncestorType={x:Type UserControl}
+                                       }
+                     }"
+                Margin="10,0" />
+
         </DockPanel>
 
         <ListBox
+            Foreground="#EEEEEE"
+            Background="#202020"
+            Name="lb"
             ItemsSource="{
                         Binding Path=PathContent,
                         RelativeSource={
@@ -92,7 +109,8 @@
                                                 RelativeSource Mode=FindAncestor, 
                                                 AncestorType={x:Type UserControl}
                                          }
-                     }" />
+                     }"
+                        CommandParameter="{Binding ElementName=lb, Path=SelectedIndex}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
 
