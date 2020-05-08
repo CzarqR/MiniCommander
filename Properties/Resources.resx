@@ -120,6 +120,12 @@
   <data name="copy" xml:space="preserve">
     <value>Copy file&gt;&gt;</value>
   </data>
+  <data name="copy_error" xml:space="preserve">
+    <value>Couldn't copy file {0} to {1}</value>
+  </data>
+  <data name="copy_succed" xml:space="preserve">
+    <value>FIle {0} copied to {1}</value>
+  </data>
   <data name="drive" xml:space="preserve">
     <value>Drive</value>
   </data>
@@ -131,5 +137,8 @@
   </data>
   <data name="path" xml:space="preserve">
     <value>Path</value>
+  </data>
+  <data name="selected_file" xml:space="preserve">
+    <value>Selected File</value>
   </data>
 </root>

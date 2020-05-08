@@ -68,6 +68,7 @@
     <Compile Include="ViewModel\Commands\CommandHandler.cs" />
     <Compile Include="ViewModel\Commands\CommandHandlerParameter.cs" />
     <Compile Include="ViewModel\ControlVM\PanelTCVM.cs" />
+    <Compile Include="ViewModel\Converters\PathToFileConverter.cs" />
     <Compile Include="ViewModel\WindowVM\BaseVM.cs" />
     <Compile Include="ViewModel\WindowVM\MiniTCVM.cs" />
     <Compile Include="View\MiniTCWindow.xaml.cs">

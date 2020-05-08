@@ -1,18 +1,52 @@
 ﻿using Commander.ViewModel.Commands;
 using Commander.ViewModel.ControlVM;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Commander.ViewModel.WindowVM
 {
+    using R = Properties.Resources;
+
     class MiniTCVM : BaseVM
     {
+
+        #region properties
+
+        private readonly PanelTCVM LeftPanel = new PanelTCVM();
+        private readonly PanelTCVM RightPanel = new PanelTCVM();
+
+        private string copyError;
+
+        public string CopyError
+        {
+            get
+            {
+                return copyError;
+            }
+            private set
+            {
+                copyError = value;
+                OnPropertyChanged(nameof(CopyError));
+            }
+        }
+
+        private string succesfullCopy;
+
+        public string SuccesfullCopy
+        {
+            get
+            {
+                return succesfullCopy;
+            }
+            private set
+            {
+                succesfullCopy = value;
+                OnPropertyChanged(nameof(SuccesfullCopy));
+
+            }
+        }
 
         private ObservableCollection<PanelTCVM> panels;
 
@@ -22,12 +56,16 @@ namespace Commander.ViewModel.WindowVM
             {
                 return panels;
             }
-            set
+            private set
             {
                 panels = value;
                 OnPropertyChanged(nameof(Panels));
             }
         }
+
+        #endregion
+
+        #region commands
 
         private ICommand copyCommand;
 
@@ -39,9 +77,24 @@ namespace Commander.ViewModel.WindowVM
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         private void Copy()
         {
-            Console.WriteLine("copy");
+            Console.WriteLine($"Copy file: {LeftPanel.SelectedFile} to dir: {RightPanel.Path}");
+            try
+            {
+                File.Copy(LeftPanel.SelectedFile, Path.Combine(RightPanel.Path, Path.GetFileName(LeftPanel.SelectedFile)));
+                SuccesfullCopy = string.Format(R.copy_succed, LeftPanel.SelectedFile, RightPanel.Path);
+                CopyError = string.Empty;
+                LeftPanel.UpdateContent();
+                RightPanel.UpdateContent();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Cannot copy");
+                CopyError = string.Format(R.copy_error, LeftPanel.SelectedFile, RightPanel.Path);
+                SuccesfullCopy = string.Empty;
+            }
         }
 
         private bool CanCopy()
@@ -56,13 +109,26 @@ namespace Commander.ViewModel.WindowVM
             }
         }
 
+        #endregion
 
-        private readonly PanelTCVM LeftPanel = new PanelTCVM();
-        private readonly PanelTCVM RightPanel = new PanelTCVM();
+        #region events binding
+
+        private void ClearInfo()
+        {
+            Console.WriteLine("Clearing info");
+            CopyError = string.Empty;
+            SuccesfullCopy = string.Empty;
+        }
+
+        #endregion
+
 
 
         public MiniTCVM()
         {
+            LeftPanel.InteractionEvent += ClearInfo;
+            RightPanel.InteractionEvent += ClearInfo;
+
             Panels = new ObservableCollection<PanelTCVM>
             {
                 LeftPanel,

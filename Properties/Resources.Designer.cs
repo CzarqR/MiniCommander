@@ -70,6 +70,24 @@ namespace Commander.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Couldn&apos;t copy file {0} to {1}.
+        /// </summary>
+        public static string copy_error {
+            get {
+                return ResourceManager.GetString("copy_error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FIle {0} copied to {1}.
+        /// </summary>
+        public static string copy_succed {
+            get {
+                return ResourceManager.GetString("copy_succed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Drive.
         /// </summary>
         public static string drive {
@@ -102,6 +120,15 @@ namespace Commander.Properties {
         public static string path {
             get {
                 return ResourceManager.GetString("path", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected File.
+        /// </summary>
+        public static string selected_file {
+            get {
+                return ResourceManager.GetString("selected_file", resourceCulture);
             }
         }
     }

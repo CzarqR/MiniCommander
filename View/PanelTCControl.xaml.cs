@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Commander.View
 {
@@ -20,8 +10,6 @@ namespace Commander.View
     {
 
         #region properties
-
-
 
         public string Path
         {
@@ -39,20 +27,20 @@ namespace Commander.View
             DependencyProperty.Register("Path", typeof(string), typeof(PanelTCControl), new PropertyMetadata(null));
 
 
-        public List<string> Drives
+        public List<string> Drivers
         {
             get
             {
-                return (List<string>)GetValue(DrivesProperty);
+                return (List<string>)GetValue(DriversProperty);
             }
             set
             {
-                SetValue(DrivesProperty, value);
+                SetValue(DriversProperty, value);
             }
         }
 
-        public static readonly DependencyProperty DrivesProperty =
-            DependencyProperty.Register("Drives", typeof(List<string>), typeof(PanelTCControl), new PropertyMetadata(null));
+        public static readonly DependencyProperty DriversProperty =
+            DependencyProperty.Register("Drivers", typeof(List<string>), typeof(PanelTCControl), new PropertyMetadata(null));
 
 
         public List<string> PathContent
@@ -101,6 +89,23 @@ namespace Commander.View
 
         public static readonly DependencyProperty ErrorTextProperty =
             DependencyProperty.Register("ErrorText", typeof(string), typeof(PanelTCControl), new PropertyMetadata(null));
+
+
+
+        public string SelectedFile
+        {
+            get
+            {
+                return (string)GetValue(SelectedFileProperty);
+            }
+            set
+            {
+                SetValue(SelectedFileProperty, value);
+            }
+        }
+
+        public static readonly DependencyProperty SelectedFileProperty =
+            DependencyProperty.Register("SelectedFile", typeof(string), typeof(PanelTCControl), new PropertyMetadata(null));
 
 
 

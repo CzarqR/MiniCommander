@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Commander.ViewModel.ControlVM
@@ -20,6 +18,8 @@ namespace Commander.ViewModel.ControlVM
         private int foldersCount;
         private int deepIndex;
 
+        public event Action InteractionEvent;
+
         private string path;
 
         public string Path
@@ -28,7 +28,7 @@ namespace Commander.ViewModel.ControlVM
             {
                 return path;
             }
-            set
+            private set
             {
                 path = value;
                 UpdateContent();
@@ -36,10 +36,22 @@ namespace Commander.ViewModel.ControlVM
             }
         }
 
+        private string selectedFile;
+
         public string SelectedFile
         {
-            get; private set;
+            get
+            {
+                return selectedFile;
+            }
+            private set
+            {
+                selectedFile = value;
+                OnPropertyChanged(nameof(selectedFile));
+            }
         }
+
+
 
         private int selectedDriveIndex;
 
@@ -67,7 +79,7 @@ namespace Commander.ViewModel.ControlVM
             {
                 return errorText;
             }
-            set
+            private set
             {
                 errorText = value;
                 OnPropertyChanged(nameof(ErrorText));
@@ -83,7 +95,7 @@ namespace Commander.ViewModel.ControlVM
             {
                 return drivers;
             }
-            set
+            private set
             {
                 drivers = value;
                 OnPropertyChanged(nameof(Drivers));
@@ -97,7 +109,7 @@ namespace Commander.ViewModel.ControlVM
             {
                 return content;
             }
-            set
+            private set
             {
                 content = value;
                 OnPropertyChanged(nameof(Content));
@@ -117,19 +129,21 @@ namespace Commander.ViewModel.ControlVM
 
         }
 
-        public void Click(int index)
+        private void Click(int index)
         {
+            InteractionEvent?.Invoke();
             ErrorText = string.Empty;
             Console.WriteLine($"deep index: {deepIndex}");
-            Console.WriteLine($"SELECTED {index}");
+            Console.WriteLine($"selected index: {index}");
             if (deepIndex == 0) //drive folder
             {
                 Console.WriteLine("drive folder");
                 if (index < foldersCount)
                 {
-                    Console.WriteLine("folder");
+                    Console.WriteLine($"Selected folder {Path}");
                     deepIndex++;
                     Path = contentOriginal[index];
+                    Console.WriteLine($"Selected folder {Path}");
                     SelectedFile = string.Empty;
                 }
                 else
@@ -169,14 +183,14 @@ namespace Commander.ViewModel.ControlVM
         public PanelTCVM()
         {
             Drivers = Directory.GetLogicalDrives().OfType<string>().ToList();
-            SelectedDriveIndex = 1; //todo, change to 0 after testing
+            SelectedDriveIndex = 0;
             deepIndex = 0;
             Path = Drivers[SelectedDriveIndex];
         }
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
-        private void UpdateContent()
+        public void UpdateContent()
         {
             Console.WriteLine("Update");
             List<string> folders;
@@ -187,6 +201,7 @@ namespace Commander.ViewModel.ControlVM
             catch (UnauthorizedAccessException)
             {
                 ErrorText = R.lack_of_acces;
+                deepIndex--;
                 return;
             }
 

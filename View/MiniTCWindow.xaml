@@ -9,9 +9,10 @@
     xmlns:vm="clr-namespace:Commander.ViewModel.WindowVM"
     mc:Ignorable="d"
     Title="MiniTC"
+    WindowStartupLocation="CenterScreen"
     Background="#151515"
     Height="800"
-    Width="800">
+    Width="1000">
 
     <Window.Resources>
         <vm:MiniTCVM
@@ -25,7 +26,7 @@
             <RowDefinition
                 Height="*" />
             <RowDefinition
-                Height="Auto" />
+                Height="40" />
         </Grid.RowDefinitions>
 
         <ItemsControl
@@ -45,25 +46,60 @@
 
                 <DataTemplate>
                     <local:PanelTCControl
+                        SelectedFile="{Binding SelectedFile}"
                         ErrorText="{Binding ErrorText}"
                         SelectPath="{Binding PathSelectCommand}"
                         PathContent="{Binding Content}"
                         SelectedDriveIndex="{Binding SelectedDriveIndex, Mode=TwoWay}"
-                        Drives="{Binding Path=Drivers}"
+                        Drivers="{Binding Path=Drivers}"
                         Path="{Binding Path=Path}" />
 
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <Button
-            Command="{Binding CopyCommand}"
-            Margin="5"
-            Width="100"
+        <Grid
+            Margin="10,0,10,5"
             Grid.Row="1">
-            <TextBlock
-                Text="{x:Static r:Resources.copy}" />
-        </Button>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition
+                    Width="*" />
+                <ColumnDefinition
+                    Width="Auto" />
+                <ColumnDefinition
+                    Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Viewbox
+                Margin="10,0"
+                StretchDirection="Both"
+                Stretch="Uniform">
+                <TextBlock
+                    Foreground="Red"
+                    Text="{Binding CopyError}" />
+            </Viewbox>
+
+            <Button
+                Grid.Column="1"
+                Command="{Binding CopyCommand}"
+                Margin="5"
+                Width="100">
+                <TextBlock
+                    Text="{x:Static r:Resources.copy}" />
+            </Button>
+
+            <Viewbox
+                Grid.Column="2"
+                Margin="10,0"
+                StretchDirection="Both"
+                Stretch="Uniform">
+                <TextBlock
+                    Foreground="Green"
+                    Text="{Binding SuccesfullCopy}" />
+            </Viewbox>
+
+        </Grid>
 
     </Grid>
 

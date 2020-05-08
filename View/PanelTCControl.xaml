@@ -5,11 +5,16 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:conv="clr-namespace:Commander.ViewModel.Converters"
     xmlns:r="clr-namespace:Commander.Properties"
-    xmlns:local="clr-namespace:Commander.View"
     mc:Ignorable="d"
     d:DesignHeight="500"
-    d:DesignWidth="250">
+    d:DesignWidth="350">
+
+    <UserControl.Resources>
+        <conv:PathToFileConverter
+            x:Key="PathToFile" />
+    </UserControl.Resources>
 
     <DockPanel
         Margin="10">
@@ -39,13 +44,48 @@
 
         </DockPanel>
 
-        <DockPanel
+        <Grid
             DockPanel.Dock="Top"
             Margin="0,5">
 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition
+                    Width="Auto" />
+                <ColumnDefinition
+                    Width="*" />
+                <ColumnDefinition
+                    Width="Auto" />
+                <ColumnDefinition
+                    Width="Auto" />
+
+            </Grid.ColumnDefinitions>
+
+            <TextBlock
+                Foreground="#EEEEEE"
+                HorizontalAlignment="Right"
+                Text="{x:Static r:Resources.selected_file}"
+                Margin="10,0" />
+
+            <TextBox
+                Grid.Column="1"
+                Text="{
+                        Binding Path=SelectedFile,
+                        Converter={StaticResource PathToFile},
+                        RelativeSource={
+                                        RelativeSource Mode=FindAncestor, 
+                                        AncestorType={x:Type UserControl}
+                                       }
+                     }"
+                Margin="10,0"
+                IsEnabled="False"
+                HorizontalAlignment="Stretch">
+
+            </TextBox>
+
             <ComboBox
+                Grid.Column="3"
                 ItemsSource="{
-                        Binding Path=Drives,
+                        Binding Path=Drivers,
                         RelativeSource={
                                         RelativeSource Mode=FindAncestor, 
                                         AncestorType={x:Type UserControl}
@@ -65,26 +105,26 @@
             </ComboBox>
 
             <TextBlock
+                Grid.Column="2"
                 Foreground="#EEEEEE"
                 HorizontalAlignment="Right"
-                DockPanel.Dock="Right"
                 Text="{x:Static r:Resources.drive}"
                 Margin="10,0" />
 
-            <TextBlock
-                Foreground="Red"
-                HorizontalAlignment="Right"
-                DockPanel.Dock="Right"
-                Text="{
+        </Grid>
+
+        <TextBlock
+            DockPanel.Dock="Top"
+            Foreground="Red"
+            HorizontalAlignment="Right"
+            Text="{
                         Binding Path=ErrorText,
                         RelativeSource={
                                         RelativeSource Mode=FindAncestor, 
                                         AncestorType={x:Type UserControl}
                                        }
                      }"
-                Margin="10,0" />
-
-        </DockPanel>
+            Margin="10,5" />
 
         <ListBox
             Foreground="#EEEEEE"
