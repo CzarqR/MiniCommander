@@ -131,6 +131,10 @@ namespace Commander.ViewModel.ControlVM
 
         private void Click(int index)
         {
+            if (index == -1)
+            {
+                return;
+            }
             InteractionEvent?.Invoke();
             ErrorText = string.Empty;
             Console.WriteLine($"deep index: {deepIndex}");
